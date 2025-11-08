@@ -1,0 +1,117 @@
+#include <iostream>
+using namespace std;
+
+// ----- Linear Search (Iterative) -----
+// Returns the index of key if found, else -1
+int linearSearchIterative(int arr[], int n, int key) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == key)
+            return i;  // Return index if found
+    }
+    return -1; // Key not found
+}
+
+// ----- Linear Search (Recursive) -----
+// Returns the index of key if found, else -1
+int linearSearchRecursive(int arr[], int n, int key, int index = 0) {
+    if (index == n)           // Base case: reached end of array
+        return -1;  
+    if (arr[index] == key)    // Found key
+        return index;
+    return linearSearchRecursive(arr, n, key, index + 1);  // Recur for next index
+}
+
+// ----- Binary Search (Iterative) -----
+// Requires sorted array
+int binarySearchIterative(int arr[], int n, int key) {
+    int low = 0, high = n - 1;
+    while (low <= high) {
+        int mid = (low + high) / 2;  // Middle index
+        if (arr[mid] == key)
+            return mid;              // Found key
+        else if (arr[mid] < key)
+            low = mid + 1;           // Search right half
+        else
+            high = mid - 1;          // Search left half
+    }
+    return -1;  // Key not found
+}
+
+// ----- Binary Search (Recursive) -----
+// Requires sorted array
+int binarySearchRecursive(int arr[], int low, int high, int key) {
+    if (low > high)              // Base case: key not found
+        return -1;
+    int mid = (low + high) / 2;
+    if (arr[mid] == key)
+        return mid;              // Found key
+    else if (arr[mid] < key)
+        return binarySearchRecursive(arr, mid + 1, high, key); // Search right half
+    else
+        return binarySearchRecursive(arr, low, mid - 1, key);  // Search left half
+}
+
+// ----- Main Function -----
+int main() {
+    int n, key, choice, method;
+
+    cout << "Enter number of elements: ";
+    cin >> n;
+    int arr[n];
+
+    cout << "Enter " << n << " elements:\n";
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+
+    cout << "\nEnter the key value to search: ";
+    cin >> key;
+
+    while (true) {
+        cout << " SEARCHING MENU\n";
+        cout << "1. Linear Search\n";
+        cout << "2. Binary Search\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == 3) {
+            cout << "Exiting program...\n";
+            break;
+        }
+
+        cout << "\n1. Iterative (Non-Recursive)\n2. Recursive\n";
+        cout << "Choose method: ";
+        cin >> method;
+
+        int result = -1;
+
+        switch (choice) {
+            case 1:  // Linear search
+                if (method == 1)
+                    result = linearSearchIterative(arr, n, key);
+                else
+                    result = linearSearchRecursive(arr, n, key);
+                break;
+
+            case 2:  // Binary search
+                cout << "Note: Binary search requires the list to be sorted.\n";
+                if (method == 1)
+                    result = binarySearchIterative(arr, n, key);
+                else
+                    result = binarySearchRecursive(arr, 0, n - 1, key);
+                break;
+
+            default:
+                cout << "Invalid choice! Try again.\n";
+                continue;
+        }
+
+        // Display result
+        if (result != -1)
+            cout << "Key " << key << " found at position " << result + 1 << ".\n";
+        else
+            cout << "Key " << key << " not found.\n";
+    }
+
+    return 0;
+}
