@@ -1,0 +1,120 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 5  // Maximum size of the Circular Queue
+
+// ----- Circular Queue using Array -----
+class CircularQueue {
+    int arr[MAX];
+    int front, rear;
+
+public:
+    // Constructor to initialize front and rear
+    CircularQueue() {
+        front = -1;
+        rear = -1;
+    }
+
+    // Check if queue is full
+    bool isFull() {
+        return ((front == 0 && rear == MAX - 1) || (front == rear + 1));
+    }
+
+    // Check if queue is empty
+    bool isEmpty() {
+        return (front == -1);
+    }
+
+    // Enqueue operation
+    void enqueue(int data) {
+        if (isFull()) {
+            cout << "Queue Overflow! Cannot enqueue " << data << ".\n";
+            return;
+        }
+        if (front == -1) 
+            front = 0;
+        rear = (rear + 1) % MAX;
+        arr[rear] = data;
+        cout << data << " enqueued into Circular Queue.\n";
+    }
+
+    // Dequeue operation
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "Queue Underflow! Nothing to dequeue.\n";
+            return;
+        }
+        cout << arr[front] << " dequeued from Circular Queue.\n";
+        if (front == rear) {  // Only one element in the queue
+            front = -1;
+            rear = -1;
+        } else {
+            front = (front + 1) % MAX;
+        }
+    }
+
+    // Peek front element
+    void peek() {
+        if (isEmpty()) {
+            cout << "Queue is empty!\n";
+            return;
+        }
+        cout << "Front element: " << arr[front] << endl;
+    }
+
+    // Display all elements in circular manner
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty!\n";
+            return;
+        }
+        cout << "Circular Queue elements: ";
+        int i = front;
+        while (true) {
+            cout << arr[i] << " ";
+            if (i == rear)
+                break;
+            i = (i + 1) % MAX;
+        }
+        cout << endl;
+    }
+};
+
+// ----- Main Function -----
+int main() {
+    CircularQueue cq;
+    int choice, value;
+
+    while (true) {
+        cout << "      CIRCULAR QUEUE USING ARRAYS\n";
+        cout << "1. Enqueue\n";
+        cout << "2. Dequeue\n";
+        cout << "3. Peek (Front Element)\n";
+        cout << "4. Display\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter value to enqueue: ";
+                cin >> value;
+                cq.enqueue(value);
+                break;
+            case 2:
+                cq.dequeue();
+                break;
+            case 3:
+                cq.peek();
+                break;
+            case 4:
+                cq.display();
+                break;
+            case 5:
+                cout << "Exiting program...\n";
+                return 0;
+            default:
+                cout << "Invalid choice! Try again.\n";
+        }
+    }
+}
